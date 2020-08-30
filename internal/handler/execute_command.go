@@ -245,7 +245,11 @@ func (s *Server) exec(query string, vertical bool) (string, error) {
 }
 
 func (s *Server) showDatabases(ctx context.Context, params lsp.ExecuteCommandParams) (result interface{}, err error) {
-	repo := database.NewMySQLDBRepository(s.dbConn.Conn)
+	repo, err := s.newDBRepository(ctx)
+	if err != nil {
+	    return nil, err
+	}
+
 	databases, err := repo.Databases(ctx)
 	if err != nil {
 		return nil, err
