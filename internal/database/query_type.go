@@ -2,6 +2,7 @@ package database
 
 import (
 	"strings"
+	"unicode"
 )
 
 // queryMap is the map of SQL prefixes use as queries.
@@ -233,7 +234,7 @@ func QueryExecType(prefix, sqlstr string) (string, bool) {
 	}
 
 	var pref string
-	sp := strings.Split(prefix, " ")
+	sp := strings.FieldsFunc(prefix, func(c rune) bool { return unicode.IsSpace(c) })
 	if len(sp) == 0 {
 		return pref, false
 	}
